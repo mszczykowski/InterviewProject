@@ -30,6 +30,10 @@ namespace InterviewProject.Persistence.Context
             modelBuilder.Entity<Border>()
                 .HasKey(border => new { border.CountryId, border.NeighbourId });
 
+            modelBuilder.Entity<Border>()
+                .HasOne(border => border.Country)
+                .WithMany(country => country.Borders);
+
 
             ApplicationDbContextSeed.SeedData(modelBuilder);
         }

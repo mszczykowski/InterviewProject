@@ -5,18 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using InterviewProject.Application.Interfaces;
 using InterviewProject.Domain.Exceptions;
-using InterviewProject.Domain.Entities;
+using InterviewProject.Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace InterviewProject.Application.Shipment.Commands.GetTransitCountries
 {
     public class GetTransitCountriesCommandHandler : IRequestHandler<GetTransitCountriesRequest, GetTransitCountriesResponse>
     {
         private readonly IApplicationDbContext _context;
-        public GetTransitCountriesCommandHandler(IApplicationDbContext context)
+        private readonly IGraphPathFinder _graphPathFinder;
+
+
+        public GetTransitCountriesCommandHandler(IApplicationDbContext context, IGraphPathFinder graphPathFinder)
         {
             _context = context;
+            _graphPathFinder = graphPathFinder;
         }
 
         public async Task<GetTransitCountriesResponse> Handle(GetTransitCountriesRequest request, CancellationToken cancellationToken)
@@ -27,65 +32,18 @@ namespace InterviewProject.Application.Shipment.Commands.GetTransitCountries
             var destinationCountry = _context.Countries.SingleOrDefault(country => country.Code == request.DestinationCode)
                 ?? throw new EntityNotFoundException();
 
-            var countries = await _context.Countries.Include(c => c.Borders).ToListAsync();
+            var countries = await _context.Countries.Include(c => c.Borders).Cast<IGraphNode>().ToListAsync();
 
-            
-        }
+            var path = _graphPathFinder.FindShortestPath(startCountry, destinationCountry, countries );
 
-        private void FindShortestPath(Country start, Country destination, List<Country> countries)
-        {
-            Queue<Country> queue = new Queue<Country>();
-
-            Dictionary<Country, NodeStats> nodesStats = new Dictionary<Country, NodeStats>();
-
-            countries.ForEach(country =>
+            var response = new GetTransitCountriesResponse();
+            response.DestinationCode = destinationCountry.Code;
+            path.ForEach(country =>
             {
-                nodesStats.Add(country, new NodeStats());
+                response.TransitCountries.Add(country.Value);
             });
 
-            queue.Enqueue(start);
-
-            nodesStats[start].Processed = true;
-
-            nodesStats[start].Distance = 0;
-
-            while(queue.Count > 0)
-            {
-                var current = queue.Dequeue();
-
-                current.Borders.ToList().ForEach(border =>
-                {
-                    var neighbour = border.Neighbour;
-                    if (nodesStats[neighbour].Processed == false)
-                    {
-                        queue.Enqueue(neighbour);
-
-                        nodesStats[neighbour].Processed = true;
-                        nodesStats[neighbour].Distance = nodesStats[current].Distance + 1;
-                        nodesStats[neighbour].Previous = current;
-                    }
-                });
-
-            }
-            
+            return response;
         }
-
-
-        private class NodeStats
-        {
-            public Country Previous { get; set; }
-            public int Distance { get; set; }
-            public bool Processed { get; set; }
-
-            public NodeStats()
-            {
-                Previous = null;
-                Distance = Int32.MaxValue;
-                Processed = false;
-            }
-        }
-
     }
-
-    
 }

@@ -103,7 +103,7 @@ namespace InterviewProject.Persistence.Context
                     new Border
                     {
                         CountryId = "MEX",
-                        NeighbourId = "BLZ"
+                        NeighbourId = "USA"
                     },
                     new Border
                     {

@@ -13,7 +13,7 @@ namespace InterviewProject.Application.Shipment.Commands.GetTransitCountries
 
         public GetTransitCountriesRequest(string destinationCode)
         {
-            DestinationCode = destinationCode;
+            DestinationCode = destinationCode.ToUpper();
         }
     }
 }

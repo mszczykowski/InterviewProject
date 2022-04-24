@@ -15,8 +15,8 @@ namespace InterviewProject.API.Controllers
             _mediator = mediator;
         }
         
-        [HttpGet("/{query?}")]
-        public async Task<GetTransitCountriesResponse> GetTransitCountries(string? query)
+        [HttpGet("/{query}")]
+        public async Task<GetTransitCountriesResponse> GetTransitCountries(string query)
         {
             var request = new GetTransitCountriesRequest(query);
 

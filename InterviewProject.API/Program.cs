@@ -1,10 +1,12 @@
 using InterviewProject.Persistence;
+using InterviewProject.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddPersistenceLayer();
+builder.Services.AddApplicationLayer();
 
 
 builder.Services.AddControllers();
