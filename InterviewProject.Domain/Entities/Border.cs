@@ -18,8 +18,6 @@ namespace InterviewProject.Domain.Entities
 
 
         [NotMapped]
-        public IGraphNode Source => Country;
-        [NotMapped]
         public IGraphNode Target => Neighbour;
     }
 }

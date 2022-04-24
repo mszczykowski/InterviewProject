@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InterviewProject.Domain.Exceptions
 {
-    public class PathCannotBeFoundException : Exception
+    public class PathNotFoundException : Exception
     {
 
     }

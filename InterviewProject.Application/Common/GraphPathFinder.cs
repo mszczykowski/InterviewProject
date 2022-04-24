@@ -9,7 +9,7 @@ using InterviewProject.Domain.Exceptions;
 
 namespace InterviewProject.Application.Common
 {
-    internal class GraphPathFinder : IGraphPathFinder
+    public class GraphPathFinder : IGraphPathFinder
     {
         public List<IGraphNode> FindShortestPath(IGraphNode start, IGraphNode target, List<IGraphNode> nodes)
         {
@@ -68,7 +68,7 @@ namespace InterviewProject.Application.Common
             }
             path.Reverse();
 
-            if (path.Count == 0 || path[0] != start) throw new PathCannotBeFoundException();
+            if (path.Count == 0 || path[0] != start) throw new PathNotFoundException();
 
             return path;
         }

@@ -8,7 +8,6 @@ namespace InterviewProject.Domain.Common
 {
     public interface IGraphEdge
     {
-        IGraphNode Source { get; }
         IGraphNode Target { get; }
     }
 }

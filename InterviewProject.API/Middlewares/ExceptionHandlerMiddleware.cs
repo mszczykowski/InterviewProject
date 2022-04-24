@@ -40,7 +40,7 @@ namespace InterviewProject.API.Middlewares
             {
                 return (int)HttpStatusCode.BadRequest;
             }
-            if (exception is PathCannotBeFoundException)
+            if (exception is PathNotFoundException)
             {
                 return (int)HttpStatusCode.NotFound;
             }
