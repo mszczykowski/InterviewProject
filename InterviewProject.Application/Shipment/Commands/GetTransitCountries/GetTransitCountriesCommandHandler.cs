@@ -8,7 +8,6 @@ using InterviewProject.Domain.Exceptions;
 using InterviewProject.Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 namespace InterviewProject.Application.Shipment.Commands.GetTransitCountries
 {
