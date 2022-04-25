@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,10 @@ namespace InterviewProject.Persistence
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddPersistenceLayer(this IServiceCollection services)
+        public static void AddPersistenceLayer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("InMemoryDb"));
+                options.UseSqlServer(configuration.GetConnectionString("CountryDbConnection")));
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
         }

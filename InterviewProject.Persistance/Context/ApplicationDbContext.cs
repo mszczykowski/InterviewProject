@@ -17,7 +17,7 @@ namespace InterviewProject.Persistence.Context
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base (options)
         {
-            Database.EnsureCreated();
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,7 +32,8 @@ namespace InterviewProject.Persistence.Context
 
             modelBuilder.Entity<Border>()
                 .HasOne(border => border.Country)
-                .WithMany(country => country.Borders);
+                .WithMany(country => country.Borders)
+                .OnDelete(DeleteBehavior.NoAction);
 
 
             ApplicationDbContextSeed.SeedData(modelBuilder);
