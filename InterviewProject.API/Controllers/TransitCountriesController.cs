@@ -22,5 +22,11 @@ namespace InterviewProject.API.Controllers
 
             return await _mediator.Send(request);
         }
+
+        [HttpGet]
+        public int ReturnDecimal()
+        {
+            return 0;
+        }
     }
 }
