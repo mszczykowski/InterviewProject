@@ -8,6 +8,7 @@ using InterviewProject.Domain.Exceptions;
 using InterviewProject.Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using InterviewProject.Domain.Entities;
 
 namespace InterviewProject.Application.Shipment.Commands.GetTransitCountries
 {
@@ -15,6 +16,8 @@ namespace InterviewProject.Application.Shipment.Commands.GetTransitCountries
     {
         private readonly IApplicationDbContext _context;
         private readonly IGraphPathFinder _graphPathFinder;
+
+        private readonly string startCode = "USA";
 
 
         public GetTransitCountriesCommandHandler(IApplicationDbContext context, IGraphPathFinder graphPathFinder)
@@ -25,11 +28,11 @@ namespace InterviewProject.Application.Shipment.Commands.GetTransitCountries
 
         public async Task<GetTransitCountriesResponse> Handle(GetTransitCountriesRequest request, CancellationToken cancellationToken)
         {
-            var startCountry = _context.Countries.SingleOrDefault(country => country.Code == "USA")
-                ?? throw new EntityNotFoundException();
+            var startCountry = _context.Countries.SingleOrDefault(country => country.Code == startCode)
+                ?? throw new EntityNotFoundException(startCode, nameof(Country));
 
             var destinationCountry = _context.Countries.SingleOrDefault(country => country.Code == request.DestinationCode)
-                ?? throw new EntityNotFoundException();
+                ?? throw new EntityNotFoundException(request.DestinationCode, nameof(Country));
 
             var countries = await _context.Countries.Include(c => c.Borders).Cast<IGraphNode>().ToListAsync();
 

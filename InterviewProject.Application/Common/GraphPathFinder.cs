@@ -68,7 +68,7 @@ namespace InterviewProject.Application.Common
             }
             path.Reverse();
 
-            if (path.Count == 0 || path[0] != start) throw new PathNotFoundException();
+            if (path.Count == 0 || path[0] != start) throw new PathNotFoundException(start.Value, destination.Value);
 
             return path;
         }

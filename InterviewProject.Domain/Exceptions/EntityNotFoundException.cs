@@ -16,5 +16,9 @@ namespace InterviewProject.Domain.Exceptions
         {
 
         }
+        public EntityNotFoundException(string key, string type) : base($"Entity of type \"{type}\" with key \"{key}\" cannot be found.")
+        {
+
+        }
     }
 }

@@ -15,9 +15,9 @@ namespace InterviewProject.Application
     {
         public static void AddApplicationLayer(this IServiceCollection services)
         {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-
             services.AddScoped<IGraphPathFinder, GraphPathFinder>();
+
+            services.AddMediatR(Assembly.GetExecutingAssembly());
         }
     }
 }
